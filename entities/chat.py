@@ -1,7 +1,9 @@
 """ Chat entity """
-from typing import List
+from typing import List, Optional
 
 from configuration import Configuration
+from .user import User
+from .chat_response import ChatResponse
 
 import openai
 
@@ -16,17 +18,19 @@ class Chat(object):
         self.__openai.api_key = self.__config.openai_api_key
         self.__temperature = 0
 
-    def create(self):
+    def create(self, messages: List):
         """ Create a chat completion """
-        response = openai.ChatCompletion.create(
+        self.messages = messages
+        return self
+
+    def say(self, message: str):
+        """ Say something """
+        self.messages.append(User(message))
+
+        response = ChatResponse(openai.ChatCompletion.create(
             model=self.model,
-            messages=self.messages,
+            messages=[message.data for message in self.messages],
             temperature=self.__temperature,
-        )
+        ))
 
-        print(response["choices"][0]["message"]["content"])
-
-    @property
-    def messages(self):
-        """ Return the messages as a list """
-        return [message.data() for message in self.__messages]
+        self.messages.append(response.message())
