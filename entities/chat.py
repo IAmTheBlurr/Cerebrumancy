@@ -8,9 +8,9 @@ import openai
 
 class Chat(object):
     """ Chat entity """
-    def __init__(self, config: Configuration, messages: List, model: str = "gpt-3.5-turbo"):
+    def __init__(self, config: Configuration, messages: Optional[List] = None, model: str = "gpt-3.5-turbo"):
         self.model = model
-        self.__messages = messages
+        self.messages = messages
         self.__config = config
         self.__openai = openai
         self.__openai.api_key = self.__config.openai_api_key
