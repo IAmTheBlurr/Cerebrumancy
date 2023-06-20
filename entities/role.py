@@ -36,6 +36,6 @@ class Role(object):
         self.__role = role
 
     @property
-    def data(self):
+    def message_data(self):
         """ Return the data payload as a dictionary """
         return self.__dict__()
