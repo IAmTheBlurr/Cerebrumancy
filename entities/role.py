@@ -3,7 +3,7 @@
 
 class Role(object):
     """ Role entity """
-    def __init__(self, message: str, name: str = ""):
+    def __init__(self, name: str):
         self.name = name
         self.content = message
         self.__role = "role"
