@@ -47,6 +47,19 @@ class ChatResponse:
         self.role = data["choices"][0]["message"]["role"]
         self.total_tokens = data["usage"]["total_tokens"]
 
+    @property
+    def message_data(self):
+        """ Return the message data payload as a dictionary """
+        payload = {
+            'role': self.role,
+            'content': self.content
+        }
+
+        if self.name:
+            payload['name'] = self.name
+
+        return payload
+
     def message(self):
         """ Return the message """
         role_map = {
