@@ -5,8 +5,14 @@ class Role(object):
     """ Role entity """
     def __init__(self, name: str):
         self.name = name
-        self.content = message
-        self.__role = "role"
+        self.content = ''
+        self.__role = 'role'
+
+    def __call__(self, *args, **kwargs):
+        if isinstance(args[0], str):
+            self.content = args[0]
+
+        return self
 
     def __dict__(self):
         payload = {
