@@ -16,12 +16,12 @@ class Role(object):
 
     def __dict__(self):
         payload = {
-            "role": self.__role,
-            "content": self.content
+            'role': self.__role,
+            'content': self.content
         }
 
         if self.name:
-            payload["name"] = self.name
+            payload['name'] = self.name
 
         return payload
 
