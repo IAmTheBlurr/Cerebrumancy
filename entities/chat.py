@@ -52,6 +52,10 @@ class Chat(object):
         models = self.__openai.Model.list()
         return [model.id for model in models.data]
 
+    def print_latest(self):
+        """ Print the latest message """
+        print(self.messages[-1]['content'])
+
     def prompt(self, user: Union[Assistant, System, User]) -> ChatResponse:
         """ Say something """
         self.messages.append(user.message_data)
