@@ -6,6 +6,7 @@ class Role(object):
     def __init__(self, name: str):
         self.name = name
         self.content = ''
+        self.memory = []
         self.__role = 'role'
 
     def __call__(self, *args, **kwargs):

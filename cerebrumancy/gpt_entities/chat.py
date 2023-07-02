@@ -1,25 +1,23 @@
 """ Chat entity """
 from typing import List, Optional, Union
 
-from cerebrumancy.core import Configuration
+from cerebrumancy.core import Config
 from .assistant import Assistant
 from .system import System
 from .user import User
-from .chat_response import ChatResponse
 
 import openai
 
 
 class Chat(object):
     """ Chat entity """
-    def __init__(self, config: Configuration, messages: Optional[List] = None, model: str = 'gpt-3.5-turbo'):
+    def __init__(self, config: Config, messages: Optional[List] = None, model: str = 'gpt-3.5-turbo'):
         self.model = model
         self.messages = []
         self.user_assigned = None
         self.__config = config
         self.__openai = openai
         self.__openai.api_key = self.__config.openai_api_key
-        self.__temperature = 0
 
         if messages:
             self.add_messages(messages)
@@ -32,39 +30,3 @@ class Chat(object):
         """ Add messages to the chat message stack """
         for participant in participants:
             self.add_message(participant)
-
-    def add_system(self, system: System):
-        """ Add a system to the chat """
-        # Check to see if the system is already in the chat
-        for index, message in enumerate(self.messages):
-            if message['role'] == 'system':
-                self.messages.pop(index)
-                break
-
-        self.messages.append(system.message_data)
-
-    def get_models(self):
-        """ Get the models """
-        models = self.__openai.Model.list()
-        return [model.id for model in models.data]
-
-    def print_latest(self):
-        """ Print the latest message """
-        print(self.messages[-1]['content'])
-
-    def prompt(self, user: Union[Assistant, System, User]) -> ChatResponse:
-        """ Say something """
-        self.messages.append(user.message_data)
-
-        self.send_chat()
-
-    def send_chat(self):
-        response = ChatResponse(openai.ChatCompletion.create(
-            model=self.model,
-            messages=self.messages,
-            temperature=self.__temperature,
-        ))
-
-        self.messages.append(response.message_data)
-
-        return response
