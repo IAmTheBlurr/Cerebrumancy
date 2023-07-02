@@ -1,10 +1,10 @@
-""" ./configuration.py """
+""" ./config.py """
 import json
 import os
 
 
-class Configuration(object):
-    """ Configuration class for the OpenAI API """
+class Config(object):
+    """ Config class for the OpenAI API """
     def __init__(self, file_path: str = ''):
         self.__file_path = ''
         self.openai_api_key = ''
