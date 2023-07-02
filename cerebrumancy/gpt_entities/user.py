@@ -19,6 +19,7 @@ class User(Role):
 
     def join(self, chat):
         """ Join a chat """
+        chat.user_assigned = self
         self.joined_chat = chat
 
     def say(self, message: str):
@@ -31,3 +32,5 @@ class User(Role):
 
         response = self.joined_chat.prompt(self)
         self.memory.append(response.message_data)
+
+        return response

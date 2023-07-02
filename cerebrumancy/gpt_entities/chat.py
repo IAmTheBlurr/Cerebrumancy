@@ -1,7 +1,7 @@
 """ Chat entity """
 from typing import List, Optional, Union
 
-from configuration import Configuration
+from cerebrumancy.core import Configuration
 from .assistant import Assistant
 from .system import System
 from .user import User
@@ -15,6 +15,7 @@ class Chat(object):
     def __init__(self, config: Configuration, messages: Optional[List] = None, model: str = 'gpt-3.5-turbo'):
         self.model = model
         self.messages = []
+        self.user_assigned = None
         self.__config = config
         self.__openai = openai
         self.__openai.api_key = self.__config.openai_api_key
@@ -30,11 +31,6 @@ class Chat(object):
     def add_messages(self, participants: List[Union[Assistant, System, User]]):
         """ Add messages to the chat message stack """
         for participant in participants:
-            if isinstance(participant, User):
-                if participant.joined_chat != self and participant.joined_chat is not None:
-                    raise ValueError('User is already joined to a different chat')
-                participant.join(self)
-
             self.add_message(participant)
 
     def add_system(self, system: System):
@@ -60,6 +56,9 @@ class Chat(object):
         """ Say something """
         self.messages.append(user.message_data)
 
+        self.send_chat()
+
+    def send_chat(self):
         response = ChatResponse(openai.ChatCompletion.create(
             model=self.model,
             messages=self.messages,

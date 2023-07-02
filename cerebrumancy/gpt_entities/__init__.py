@@ -1,4 +1,4 @@
-""" Top level importable package for all entities """
+""" Top level importable package for all gpt_entities """
 from .assistant import Assistant
 from .chat import Chat
 from .chat_response import ChatResponse
