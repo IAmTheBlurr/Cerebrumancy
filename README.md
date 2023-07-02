@@ -46,11 +46,12 @@ print(response["choices"][0]["message"]["content"])
 ```
 
 ### After (The Cerebrumancy Way)
-```python
-from configuration import Configuration
-from entities import Assistant, Chat, System, User
 
-config = Configuration("config.json")
+```python
+from cerebrumancy.core import Config
+from cerebrumancy.gpt_entities import Assistant, Chat, System, User
+
+config = Config("config.json")
 
 chat = Chat(config)
 
